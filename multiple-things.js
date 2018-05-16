@@ -7,7 +7,6 @@ const {
     WebThingServer,
 } = require('webthing');
 const uuidv4 = require('uuid/v4');
-const express = require('express');
 
 class OverheatedEvent extends Event {
     constructor(thing, data) {
@@ -155,24 +154,19 @@ function runServer() {
     // parameter to some string, which will be broadcast via mDNS.
     // In the single thing case, the thing's name will be broadcast.
 
+    console.log(process.env.PORT || 5000);
     const server = new WebThingServer([light, sensor],
         'LightAndTempDevice',
-        8888);
+        process.env.PORT || 5000);
 
-    process.on('SIGINT', () => {
-        server.stop();
-        process.exit();
-    });
+    // process.on('SIGINT', () => {
+    //     server.stop();
+    //     process.exit();
+    // });
 
     server.start();
-
-    const port = process.env.PORT || 5000;
-    console.log(port);
-    express()
-        .set('view engine', 'ejs')
-        .get('/', (req, res) => res.render(''))
-        .listen(port, () => console.log('STARTED'))
 }
 
 console.log('Starting');
 runServer();
+console.log('Started');
