@@ -13,8 +13,5 @@
     "webthing": "^0.5.3"
   },
   "author": "pmatejko",
-  "license": "MIT",
-  "engines": {
-    "node": "8.11.1"
-  }
+  "license": "MIT"
 }
