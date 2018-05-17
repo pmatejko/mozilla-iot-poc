@@ -1,0 +1,21 @@
+<br/>
+<div>
+  <div>
+    <label>Dim to level:
+      <input [(ngModel)]="dimLevel" placeholder=50>
+    </label>
+    <label>Dim in how many milliseconds
+      <input [(ngModel)]="dimDuration" placeholder=1000>
+    </label>
+    <button (click)="dim()">DIM</button>
+  </div>
+  <div>
+    <label>Change state</label>
+    <button (click)="changeState()">CHANGE</button>
+  </div>
+  <br/>
+  <div>
+    <p>Lamp is currently {{onState ? 'ON' : 'OFF'}}</p>
+    <p>Lamp dim percentage is {{currentDimLevel}}</p>
+  </div>
+</div>

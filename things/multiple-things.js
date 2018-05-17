@@ -8,11 +8,13 @@ const {
 } = require('webthing');
 const uuidv4 = require('uuid/v4');
 
+
 class OverheatedEvent extends Event {
     constructor(thing, data) {
         super(thing, 'overheated', data);
     }
 }
+
 
 class FadeAction extends Action {
     constructor(thing, input) {
@@ -30,12 +32,13 @@ class FadeAction extends Action {
     }
 }
 
+
 /**
  * A dimmable light that logs received commands to stdout.
  */
 class ExampleDimmableLight extends Thing {
     constructor() {
-        super('My Lamp', 'dimmableLight', 'A web connected lamp');
+        super('lamp', 'dimmableLight', 'A web connected lamp');
 
         this.addAvailableAction(
             'fade',
@@ -78,7 +81,10 @@ class ExampleDimmableLight extends Thing {
         return new Property(
             this,
             'on',
-            new Value(true, (v) => console.log('On-State is now', v)),
+            new Value(true, (v) => {
+                const onOrOff = v ? 'on' : 'off';
+                console.log('Lamp is now ', onOrOff)
+            }),
             {
                 type: 'boolean',
                 description: 'Whether the lamp is turned on'
@@ -89,7 +95,7 @@ class ExampleDimmableLight extends Thing {
         return new Property(
             this,
             'level',
-            new Value(50, (l) => console.log('New light level is', l)),
+            new Value(50, (l) => console.log('New light level is ', l)),
             {
                 type: 'number',
                 description: 'The level of light from 0-100',
@@ -99,12 +105,13 @@ class ExampleDimmableLight extends Thing {
     }
 }
 
+
 /**
  * A humidity sensor which updates its measurement every few seconds.
  */
 class FakeGpioHumiditySensor extends Thing {
     constructor() {
-        super('My Humidity Sensor',
+        super('sensor',
             'multiLevelSensor',
             'A web connected humidity sensor');
 
@@ -153,17 +160,14 @@ function runServer() {
     // If adding more than one thing here, be sure to set the second
     // parameter to some string, which will be broadcast via mDNS.
     // In the single thing case, the thing's name will be broadcast.
-
-    const port = process.env.PORT || 5000;
     const server = new WebThingServer([light, sensor],
         'LightAndTempDevice',
-        port);
-    console.log(port);
+        8888);
 
-    // process.on('SIGINT', () => {
-    //     server.stop();
-    //     process.exit();
-    // });
+    process.on('SIGINT', () => {
+        server.stop();
+        process.exit();
+    });
 
     server.start();
 }
