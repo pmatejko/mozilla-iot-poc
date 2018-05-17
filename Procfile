@@ -1,1 +1,1 @@
-web: node multiple-things.js
+worker: node multiple-things.js

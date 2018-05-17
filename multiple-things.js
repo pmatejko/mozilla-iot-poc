@@ -154,10 +154,11 @@ function runServer() {
     // parameter to some string, which will be broadcast via mDNS.
     // In the single thing case, the thing's name will be broadcast.
 
-    console.log(process.env.PORT || 5000);
+    const port = process.env.PORT || 5000;
     const server = new WebThingServer([light, sensor],
         'LightAndTempDevice',
-        process.env.PORT || 5000);
+        port);
+    console.log(port);
 
     // process.on('SIGINT', () => {
     //     server.stop();
